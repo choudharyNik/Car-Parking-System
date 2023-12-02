@@ -20,10 +20,10 @@ class ParkingLot:
         if self.lot[spot[0]][spot[1]] == 'empty':
             self.lot[spot[0]][spot[1]] = car.license_plate
             self.parked_cars[car.license_plate] = spot
-            print(f"Car with license plate {car.license_plate} parked successfully in spot {spot}")
+            print(f"Car {car.license_plate} parked successfully in spot {spot}")
             return True
         else:
-            print(f"Spot {spot} is occupied. Trying to find another spot for {car.license_plate}...")
+            print(f"Car {car.license_plate} not parked successfully. Trying to find another spot...")
             return False
 
     def is_full(self):
@@ -51,11 +51,11 @@ class Car:
 
 
 def main():
-    parking_lot_size = 2000
+    square_footage = 2000
     car_count = 20
-    parking_spot_size = (8, 12)
+    spot_size = (8, 12)
 
-    parking_lot = ParkingLot(parking_lot_size, parking_spot_size)
+    parking_lot = ParkingLot(square_footage, spot_size)
 
     cars = [Car(str(random.randint(1000000, 9999999))) for _ in range(car_count)]
 
