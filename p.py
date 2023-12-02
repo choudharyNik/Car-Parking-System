@@ -5,20 +5,19 @@ class ParkingLot:
     def __init__(self, square_footage, spot_size=(8, 12)):
         self.square_footage = square_footage
         self.spot_size = spot_size
-        self.rows, self.columns = self.calculate_size()
-        self.lot = [['empty' for _ in range(self.columns)] for _ in range(self.rows)]
+        self.rows = self.calculate_rows()
+        self.lot = ['empty' for _ in range(self.rows)]
         self.parked_cars = {}
 
-    def calculate_size(self):
+    def calculate_rows(self):
         spot_area = self.spot_size[0] * self.spot_size[1]
         total_spots = self.square_footage / spot_area
         rows = int(total_spots)
-        columns = int(spot_area * total_spots / self.square_footage)
-        return rows, columns
+        return rows
 
     def park_car(self, car, spot):
-        if self.lot[spot[0]][spot[1]] == 'empty':
-            self.lot[spot[0]][spot[1]] = car.license_plate
+        if self.lot[spot] == 'empty':
+            self.lot[spot] = car.license_plate
             self.parked_cars[car.license_plate] = spot
             print(f"Car {car.license_plate} parked successfully in spot {spot}")
             return True
@@ -27,10 +26,7 @@ class ParkingLot:
             return False
 
     def is_full(self):
-        for row in self.lot:
-            if 'empty' in row:
-                return False
-        return True
+        return 'empty' not in self.lot
 
     def map_parked_cars(self):
         return json.dumps(self.parked_cars, indent=2)
@@ -45,7 +41,7 @@ class Car:
     def park(self, parking_lot):
         if not parking_lot.is_full():
             while True:
-                spot = (random.randint(0, parking_lot.rows - 1), random.randint(0, parking_lot.columns - 1))
+                spot = random.randint(0, parking_lot.rows-1)
                 if parking_lot.park_car(self, spot):
                     break
 
